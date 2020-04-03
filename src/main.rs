@@ -1,6 +1,3 @@
-
-pub struct Parser;
-
 use basic_arithmetic_calculator::lexer::*;
 
 fn main() {
