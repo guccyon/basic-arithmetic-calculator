@@ -1,5 +1,5 @@
 [package]
-name = "basic-arithmetic-calculator"
+name = "basic_arithmetic_calculator"
 version = "0.1.0"
 authors = ["Tetsuro Higuchi <higuchi.tetsuro@gmail.com>"]
 edition = "2018"
