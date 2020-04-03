@@ -13,7 +13,12 @@ pub enum Token {
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
-pub enum Operator {
+pub enum UnaryOperator {
+    Minus
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
+pub enum BinaryOperator {
     Add,
     Sub,
     Mul,
@@ -21,14 +26,15 @@ pub enum Operator {
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
-pub enum Node {
-    Operand(u32),
-    UnaryOp {
-        op:Operator, node: Box<Node>
+pub enum Ast {
+    Leaf(u32),
+    UniNode {
+        op:UnaryOperator,
+        val: Box<Ast>
     },
-    BinaryOp {
-        op:Operator,
-        lhs: Box<Node>,
-        rhs: Box<Node>
+    BinNode {
+        op:BinaryOperator,
+        lhs: Box<Ast>,
+        rhs: Box<Ast>
     }
 }
