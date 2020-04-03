@@ -1,6 +1,5 @@
 use super::*;
-use super::UnaryOperator::*;
-use super::BinaryOperator::*;
+use super::Operator::*;
 use std::iter::Peekable;
 
 fn expr<T>(tokens: &mut Peekable<T>) -> Ast
@@ -73,12 +72,11 @@ where
 {
     match tokens.next() {
         Some(Token::Minus) => {
-            Ast::UniNode {
-                op: Minus,
+            Ast::Minus {
                 val: Box::new(digit(tokens))
             }
         },
-        Some(Token::Num(ref n)) => Ast::Leaf(*n),
+        Some(Token::Num(ref n)) => Ast::Digit(*n),
         _ => panic!("unexpected token")
     }
 }
@@ -109,11 +107,11 @@ fn test_parse() {
     let node = Parser::new().parse(tokens);
     let expected = Ast::BinNode {
         op: Add,
-        lhs: Box::new(Ast::Leaf(1)),
+        lhs: Box::new(Ast::Digit(1)),
         rhs: Box::new(Ast::BinNode {
             op: Mul,
-            lhs: Box::new(Ast::Leaf(2)),
-            rhs: Box::new(Ast::Leaf(3))
+            lhs: Box::new(Ast::Digit(2)),
+            rhs: Box::new(Ast::Digit(3))
         })
     };
 
@@ -130,8 +128,8 @@ fn test_expr() {
     let node = expr(&mut tokens.into_iter().peekable());
     let expected = Ast::BinNode {
         op: Add,
-        lhs: Box::new(Ast::Leaf(4)),
-        rhs: Box::new(Ast::Leaf(5)),
+        lhs: Box::new(Ast::Digit(4)),
+        rhs: Box::new(Ast::Digit(5)),
     };
 
     assert_eq!(node, expected)
@@ -147,8 +145,8 @@ fn test_term() {
     let node = term(&mut tokens.into_iter().peekable());
     let expected = Ast::BinNode {
         op: Mul,
-        lhs: Box::new(Ast::Leaf(2)),
-        rhs: Box::new(Ast::Leaf(3)),
+        lhs: Box::new(Ast::Digit(2)),
+        rhs: Box::new(Ast::Digit(3)),
     };
 
     assert_eq!(node, expected)
@@ -159,7 +157,7 @@ fn test_factor() {
     let tokens = vec! [Token::Num(2)];
     let node = factor(&mut tokens.into_iter().peekable());
 
-    assert_eq!(node, Ast::Leaf(2))
+    assert_eq!(node, Ast::Digit(2))
 }
 
 #[test]
@@ -167,7 +165,7 @@ fn test_digit() {
     let tokens = vec! [Token::Num(5)];
     let node = digit(&mut tokens.into_iter().peekable());
 
-    assert_eq!(node, Ast::Leaf(5))
+    assert_eq!(node, Ast::Digit(5))
 }
 
 #[test]
@@ -177,9 +175,8 @@ fn test_digit_minus() {
         Token::Num(6)
     ];
     let node = digit(&mut tokens.into_iter().peekable());
-    let expected = Ast::UniNode {
-        op: Minus,
-        val: Box::new(Ast::Leaf(6))
+    let expected = Ast::Minus {
+        val: Box::new(Ast::Digit(6))
     };
 
     assert_eq!(node, expected)

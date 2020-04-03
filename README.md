@@ -11,4 +11,6 @@ term   ::= factor
 
 factor ::= '(' expr ')' | digit
 
-digit  ::= '-' [0-9]+ | [0-9]+
+atom   ::= '-' expr | digit
+
+digit  ::= [0-9]+
