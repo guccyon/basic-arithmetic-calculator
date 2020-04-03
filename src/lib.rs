@@ -1,5 +1,6 @@
 pub mod lexer;
 pub mod parser;
+pub mod interpreter;
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum Token {
@@ -22,7 +23,7 @@ pub enum Operator {
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum Ast {
-    Digit(u32),
+    Digit(i32),
     Minus {
         val: Box<Ast>
     },
@@ -31,4 +32,13 @@ pub enum Ast {
         lhs: Box<Ast>,
         rhs: Box<Ast>
     }
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
+pub enum ParseError {
+    UnexpectedToken,
+    UnclosedParenthesis,
+    UnexpectedOp,
+    UnexpectedEof,
+    TooMuchTokens,
 }
