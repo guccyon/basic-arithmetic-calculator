@@ -16,7 +16,7 @@ where
         };
         tokens.next();
 
-        return Ok(Ast::BinNode {
+        return Ok(Ast::BinOp {
             op: operator,
             lhs: Box::new(lhs),
             rhs: Box::new(term(tokens)?)
@@ -40,7 +40,7 @@ where
         };
         tokens.next();
 
-        return Ok(Ast::BinNode {
+        return Ok(Ast::BinOp {
             op: operator,
             lhs: Box::new(lhs),
             rhs: Box::new(factor(tokens)?)
@@ -115,10 +115,10 @@ fn test_parse() {
         Token::Num(3)
     ];
     let node = Parser::new().parse(tokens);
-    let expected = Ast::BinNode {
+    let expected = Ast::BinOp {
         op: Add,
         lhs: Box::new(Ast::Digit(1)),
-        rhs: Box::new(Ast::BinNode {
+        rhs: Box::new(Ast::BinOp {
             op: Mul,
             lhs: Box::new(Ast::Digit(2)),
             rhs: Box::new(Ast::Digit(3))
@@ -148,7 +148,7 @@ fn test_expr() {
         Token::Num(5)
     ];
     let node = expr(&mut tokens.into_iter().peekable());
-    let expected = Ast::BinNode {
+    let expected = Ast::BinOp {
         op: Add,
         lhs: Box::new(Ast::Digit(4)),
         rhs: Box::new(Ast::Digit(5)),
@@ -165,7 +165,7 @@ fn test_term() {
         Token::Num(3)
     ];
     let node = term(&mut tokens.into_iter().peekable());
-    let expected = Ast::BinNode {
+    let expected = Ast::BinOp {
         op: Mul,
         lhs: Box::new(Ast::Digit(2)),
         rhs: Box::new(Ast::Digit(3)),
@@ -213,9 +213,7 @@ fn test_digit_minus() {
         Token::Num(6)
     ];
     let node = digit(&mut tokens.into_iter().peekable());
-    let expected = Ast::Minus {
-        val: Box::new(Ast::Digit(6))
-    };
+    let expected = Ast::Digit(-6);
 
     assert_eq!(node, Ok(expected))
 }

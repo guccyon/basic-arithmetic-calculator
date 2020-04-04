@@ -24,10 +24,7 @@ pub enum Operator {
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum Ast {
     Digit(i32),
-    Minus {
-        val: Box<Ast>
-    },
-    BinNode {
+    BinOp {
         op:Operator,
         lhs: Box<Ast>,
         rhs: Box<Ast>
