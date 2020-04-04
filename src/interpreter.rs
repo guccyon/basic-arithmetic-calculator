@@ -1,3 +1,4 @@
+use std::fmt;
 use super::*;
 use super::Ast::*;
 use super::Operator::*;
@@ -6,6 +7,12 @@ use super::Operator::*;
 pub enum InterpretError {
     /// Division by Zero
     ZeroDivision
+}
+
+impl fmt::Display for InterpretError {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "{:?}", self)
+    }
 }
 
 pub struct Interpreter;

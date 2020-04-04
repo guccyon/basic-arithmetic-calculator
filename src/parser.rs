@@ -1,6 +1,22 @@
+use std::fmt;
+use std::iter::Peekable;
 use super::*;
 use super::Operator::*;
-use std::iter::Peekable;
+
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
+pub enum ParseError {
+    UnexpectedToken,
+    UnclosedParenthesis,
+    UnexpectedOp,
+    UnexpectedEof,
+    TooMuchTokens,
+}
+
+impl fmt::Display for ParseError {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "{:?}", self)
+    }
+}
 
 fn expr<T>(tokens: &mut Peekable<T>) -> Result<Ast, ParseError>
 where

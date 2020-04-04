@@ -1,7 +1,6 @@
-use basic_arithmetic_calculator::lexer::*;
+use basic_arithmetic_calculator::repl::Repl;
 
 fn main() {
-    let input = "1 + 20 * 4 / ( 2 - -2)";
-    let result = Lexer::new(input).lex();
-    println!("{:?}", result);
+    let repl = Repl::new();
+    repl.run();
 }
